@@ -30,8 +30,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black flex items-center justify-center">
-      <div className="w-full max-w-sm border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="min-h-screen w-full bg-[url('/images/mo-background.png')] md:bg-[url('/images/background.png')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
+      <div className="w-full max-w-sm px-4">
         {screen === "home" && (
           <Home onStart={handleStart} totalQuestions={QUESTIONS_PER_ROUND} />
         )}
