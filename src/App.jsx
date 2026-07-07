@@ -1,21 +1,24 @@
 import { useState } from "react";
 import Home from "./components/Home";
+import Loading from "./components/Loading";
 import Quiz from "./components/Quiz";
 import Result from "./components/Result";
-import { getGrade, getRandomQuestions } from "./utils/grade";
+import { questions } from "./data/question";
+import { getRandomQuestions } from "./utils/grade";
 
-// 한 판에 출제할 문제 개수 (전체 풀은 30개, 그중 이만큼만 랜덤 출제)
 const QUESTIONS_PER_ROUND = 10;
 
-// screen: "home" | "quiz" | "result"
 export default function App() {
   const [screen, setScreen] = useState("home");
   const [score, setScore] = useState(0);
-  // 실제 이번 판에 출제되는 문제 세트 (매 시작마다 새로 랜덤 추출)
   const [quizQuestions, setQuizQuestions] = useState([]);
 
   function handleStart() {
-    setQuizQuestions(getRandomQuestions(getGrade, QUESTIONS_PER_ROUND));
+    setQuizQuestions(getRandomQuestions(questions, QUESTIONS_PER_ROUND));
+    setScreen("loading");
+  }
+
+  function handleLoadingComplete() {
     setScreen("quiz");
   }
 
@@ -35,6 +38,7 @@ export default function App() {
         {screen === "home" && (
           <Home onStart={handleStart} totalQuestions={QUESTIONS_PER_ROUND} />
         )}
+        {screen === "loading" && <Loading onComplete={handleLoadingComplete} />}
         {screen === "quiz" && (
           <Quiz questions={quizQuestions} onComplete={handleQuizComplete} />
         )}
